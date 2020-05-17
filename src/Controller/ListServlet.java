@@ -14,11 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import model.TouristPlace;
 import service.ListOperations;
 
-
-@WebServlet(urlPatterns= {"/list"})
+@WebServlet(urlPatterns = { "/list" })
 public class ListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-		
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = request.getParameter("name");
 		String destination = request.getParameter("travel");
@@ -31,13 +30,17 @@ public class ListServlet extends HttpServlet {
 		String reset = request.getParameter("reset");
 		
 		System.out.println("Entering into list");
+		
+		ListOperations list = new ListOperations();
+		TouristPlace places = new TouristPlace(name,destination,rank);  
+		List<TouristPlace> data=null;
 	
 		if(add!=null) {
 			// Call the add method in list operations and store the return list in list variable
-			System.out.println("calling add equals method");
-			
+			System.out.println("calling add equals method");	
+			data = list.add(places);
+			request.setAttribute("bucketList",data);
 		
-			request.setAttribute("bucketList", /*pass the list variable */);
 			request.setAttribute("message", "user added successfully");
 			RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/list.jsp");
 			rd.forward(request, response);
@@ -45,40 +48,40 @@ public class ListServlet extends HttpServlet {
 
 		if(remove!=null) {
 			// call the remove method and store the return list in a list variable
-			
-			request.setAttribute("bucketList", /*pass the list variable */);
+			data = list.remove(places);
+			request.setAttribute("bucketList",data);
 			RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/list.jsp");
 			rd.forward(request, response);
 		}
 
 		
-		if(sortbydestination!=null) {
+	/*	if(sortbydestination!=null) {
 			// call the sortByDestination method and store the value in a list variable
 			
-			request.setAttribute("bucketList", /*pass the list variable */);
+			request.setAttribute("bucketList", pass the list variable );
 			RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/list.jsp");
 			rd.forward(request, response);
 		}
 
 		if(sortbyrank!=null) {
 		// call the sortByRank method and store the value in a list variable
-			request.setAttribute("bucketList", /*pass the list variable */);
+			request.setAttribute("bucketList", pass the list variable );
 			RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/list.jsp");
 			rd.forward(request, response);
 		}
 
 		if(reset!=null) {	
 			// call the clear method and store the value in a list variable
-			request.setAttribute("bucketList", /*pass the list variable */);
+			request.setAttribute("bucketList", pass the list variable );
 			RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/list.jsp");
 			rd.forward(request, response);
-		}
+		}*/
 
 	
 	}
 
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		doGet(request, response);
 	}
